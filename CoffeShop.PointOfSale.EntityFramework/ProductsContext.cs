@@ -11,8 +11,6 @@ internal class ProductsContext : DbContext
     {
         optionsBuilder.UseSqlite($"Data Source= products.db");
 
-
-
     }
 
 

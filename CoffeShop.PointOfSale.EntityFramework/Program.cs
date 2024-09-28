@@ -12,7 +12,7 @@ while (isAppRunning)
         .Title("What do you want to do?")
         .AddChoices(
         MenuOptions.AddProduct,
-        MenuOptions.DisplayProduct,
+        MenuOptions.DeleteProduct,
         MenuOptions.UpdateProduct,
         MenuOptions.ViewProduct,
         MenuOptions.ViewAllProduct,
@@ -22,19 +22,19 @@ while (isAppRunning)
     switch (option)
     {
         case MenuOptions.AddProduct:
-            ProductController.AddProduct();
+            ProductService.InsertProduct();
             break;
-        case MenuOptions.DisplayProduct:
-            ProductController.DisplayProduct();
+        case MenuOptions.DeleteProduct:
+            ProductService.DeleteProduct();
             break;
         case MenuOptions.UpdateProduct:
-            ProductController.UpdateProduct();
+            ProductService.UpdateProduct();
             break;
         case MenuOptions.ViewProduct:
-            ProductController.GetProductById();
+            ProductService.GetProduct();
             break;
         case MenuOptions.ViewAllProduct:
-            ProductController.GetProducts();
+            ProductService.GetProducts();
             break;
 
     }
@@ -46,7 +46,7 @@ while (isAppRunning)
 enum MenuOptions
 {
     AddProduct,
-    DisplayProduct,
+    DeleteProduct,
     UpdateProduct,
     ViewProduct,
     ViewAllProduct,
