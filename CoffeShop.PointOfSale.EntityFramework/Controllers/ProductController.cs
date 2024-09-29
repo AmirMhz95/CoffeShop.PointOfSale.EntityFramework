@@ -1,15 +1,16 @@
-﻿
+﻿using CoffeShop.PointOfSale.EntityFramework.Models;
+using Microsoft.EntityFrameworkCore;
 using Spectre.Console;
 
-namespace CoffeShop.PointOfSale.EntityFramework
+namespace CoffeShop.PointOfSale.EntityFramework.Controllers
 {
     internal class ProductController
     {
-        internal static void AddProduct(string name)
+        internal static void AddProduct(Product product)
         {
 
             using var db = new ProductsContext();
-            db.Add(new Product { Name = name });
+            db.Add(product);
 
             db.SaveChanges();
         }
@@ -25,7 +26,9 @@ namespace CoffeShop.PointOfSale.EntityFramework
         internal static Product GetProductById(int id)
         {
             using var db = new ProductsContext();
-            var product = db.Products.SingleOrDefault(x => x.Id == id);
+            var product = db.Products
+                .Include(x => x.Category)
+                .SingleOrDefault(x => x.ProductId == id);
 
             return product;
         }
@@ -33,7 +36,9 @@ namespace CoffeShop.PointOfSale.EntityFramework
         internal static List<Product> GetProducts()
         {
             using var db = new ProductsContext();
-            var products = db.Products.ToList();
+            var products = db.Products
+                .Include(x => x.Category)
+                .ToList();
 
             return products;
 

@@ -1,13 +1,19 @@
-﻿using Spectre.Console;
+﻿using CoffeShop.PointOfSale.EntityFramework.Controllers;
+using CoffeShop.PointOfSale.EntityFramework.Models;
+using Spectre.Console;
 
-namespace CoffeShop.PointOfSale.EntityFramework
+namespace CoffeShop.PointOfSale.EntityFramework.Services
 {
     internal class ProductService
     {
         internal static void InsertProduct()
         {
-            var name = AnsiConsole.Ask<string>("Enter the product name");
-            ProductController.AddProduct(name);
+            var product = new Product();
+            product.Name = AnsiConsole.Ask<string>("Enter the product name");
+            product.Price = AnsiConsole.Ask<decimal>("Enter the product price");
+            product.CategoryID = CategoryService.GetCategoryOptionInput();
+
+            ProductController.AddProduct(product);
         }
 
 
@@ -32,8 +38,14 @@ namespace CoffeShop.PointOfSale.EntityFramework
         internal static void UpdateProduct()
         {
             var product = GetProdcutOptionInput();
-            var name = AnsiConsole.Ask<string>("Enter the new product name");
-            product.Name = name;
+            product.Name = AnsiConsole.Confirm("Do you want to update the product name")
+                ? AnsiConsole.Ask<string>("Enter the new product name")
+                : product.Name;
+
+            product.Price = AnsiConsole.Confirm("Do you want to update the product price")
+                ? AnsiConsole.Ask<decimal>("Enter the new product price")
+                : product.Price;
+
             ProductController.UpdateProduct(product);
         }
 
@@ -47,7 +59,7 @@ namespace CoffeShop.PointOfSale.EntityFramework
                 .Title("Select a product")
                 .AddChoices(productsArray)
             );
-            var id = products.Single(x => x.Name == option).Id;
+            var id = products.Single(x => x.Name == option).ProductId;
             var product = ProductController.GetProductById(id);
 
             return product;
